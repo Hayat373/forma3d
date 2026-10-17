@@ -12,6 +12,12 @@ import {
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
+export type ModelDimensions = {
+  x: number
+  y: number
+  z: number
+}
+
 type ImportedModelProps = {
   url: string
   materialColor: string
@@ -20,6 +26,7 @@ type ImportedModelProps = {
   customizeMaterial: boolean
   onLoaded?: () => void
   onError?: (message: string) => void
+  onDimensions?: (dimensions: ModelDimensions) => void
 }
 
 function cloneMaterial(material: Material): Material {
@@ -42,6 +49,7 @@ export default function ImportedModel({
   customizeMaterial,
   onLoaded,
   onError,
+  onDimensions,
 }: ImportedModelProps) {
   const [model, setModel] = useState<Group | null>(null)
   const [loading, setLoading] = useState(true)
@@ -60,7 +68,6 @@ export default function ImportedModel({
 
         const object = gltf.scene.clone(true)
 
-        // Clone materials so the original asset is not modified.
         object.traverse((child) => {
           if (!(child instanceof Mesh)) return
 
@@ -71,12 +78,19 @@ export default function ImportedModel({
           }
         })
 
-        // Center and scale the model to fit the viewer.
+        // Measure the model before fitting it to the viewer.
         const bounds = new Box3().setFromObject(object)
         const size = bounds.getSize(new Vector3())
         const center = bounds.getCenter(new Vector3())
         const largestDimension = Math.max(size.x, size.y, size.z)
 
+        onDimensions?.({
+          x: size.x,
+          y: size.y,
+          z: size.z,
+        })
+
+        // Fit and center the model for display.
         if (largestDimension > 0) {
           const scale = 2.5 / largestDimension
           object.scale.multiplyScalar(scale)
@@ -100,9 +114,8 @@ export default function ImportedModel({
     return () => {
       active = false
     }
-  }, [url, onLoaded, onError])
+  }, [url, onLoaded, onError, onDimensions])
 
-  // Apply live changes without reloading the model.
   useEffect(() => {
     if (!model) return
 
