@@ -106,7 +106,7 @@ Once you have a screenshot, save it as `forma3d-preview.png` inside the `public`
 
 ## 🌐 Live Demo
 
-**Live application:** .
+**Live application:** https://forma3d-q4fgcmvdt-hayats-projects-e4ba8944.vercel.app/.
 
 **GitHub repository:** https://github.com/Hayat373/forma3d
 
