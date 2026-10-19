@@ -94,15 +94,8 @@ The generated production files are placed in the `dist` directory.
 
 ## 🖼️ Screenshots
 
-Add screenshots of the application to showcase the interface and 3D viewer.
+ ![Forma3D Preview](public/forma3d-preview.png) -->
 
-Once you have a screenshot, save it as `forma3d-preview.png` inside the `public` directory and uncomment the following lines:
-
-```markdown
-<!-- Uncomment after adding public/forma3d-preview.png -->
-
-<!-- ![Forma3D Preview](public/forma3d-preview.png) -->
-```
 
 ## 🌐 Live Demo
 
